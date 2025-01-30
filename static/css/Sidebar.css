@@ -1,0 +1,235 @@
+/* General Layout Fix */
+/* General Layout Fix */
+html, body {
+  margin: -12px;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Prevent scrolling for the entire page */
+  display: flex; /* Ensure full-page layout with flexbox */
+}
+
+
+/* Sidebar */
+.sidebar {
+  position: fixed; /* Fix the sidebar in place */
+  top: 0;
+  left: 0; /* Ensures the sidebar starts at the left edge */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 24px 16px;
+  gap: 24px;
+  width: 276px;
+  height: 100vh; /* Full viewport height */
+  background: linear-gradient(180deg, #17479E 0%, #10377E 100%);
+  overflow-y: auto; /* Allow vertical scrolling if content exceeds height */
+}
+/* Frame 7: Logo and Text Layout */
+/* Frame 7 */
+.frame-7 {
+  display: flex; /* Flex to align items horizontally */
+  flex-direction: row; /* Horizontal alignment */
+  align-items: center;
+  padding: 0px; /* Align items vertically in the center */
+  gap: 8px; /* Space between logo and text */
+  width: 127px;
+  height: 12px;
+}
+
+/* Logo */
+.logo {
+  width: 48px;
+  height: 1px;
+  /* Se logo background color */
+}
+
+/* Vector (Logo) */
+.vector {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff; /* Logo design color */
+}
+
+/* Legal AI */
+.legal-ai {
+  width: 71px; /* Ensure this is wide enough for the text */
+  height: 4px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  text-transform: uppercase;
+  color: #ffffff;
+  white-space: nowrap;
+   /* Prevents the text from wrapping to the next line */
+}
+
+/* Bot */
+.bot {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0;
+  gap: 16px;
+  width: 244px;
+  height: 878px;
+}
+
+/* Item List */
+.item-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  gap: 8px;
+  margin: 0 auto;
+  width: 244px;
+  height: 194px;
+}
+
+/* Separator */
+.separator {
+  width: 244px;
+  height: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Frame 6 */
+.frame-6 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  gap: 8px;
+  width: 244px;
+  height: 186px;
+}
+
+/* Main Menu */
+.main-menu {
+  width: 71px;
+  height: 18px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 150%;
+  text-transform: uppercase;
+  color: #D6D6D6;
+  white-space: nowrap;
+}
+
+/* Item */
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 12px;
+  width: 244px;
+  height: 48px;
+  background: rgba(41, 84, 160, 0.79);
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.07);
+  border-radius: 4px;
+}
+
+/* Material Icon */
+.material {
+  width: 24px;
+  height: 24px;
+
+}
+
+/* Item Text */
+.item-text {
+  width: 83px;
+  height: 24px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #FFFFFF;
+}
+
+/* Delete Button Styling */
+.delete {
+  display: flex;
+  align-items: center;
+  width: 171px;
+  height: 24px;
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;  /* Same as box height (24px) */
+  color: #E5E5E5;
+/* Ensures the text stays on one line */
+  gap: 12px; /* Adds space between the icon and the text */
+}
+
+/* Delete Icon Styling */
+.delete-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Item Text Styling */
+.item-text {
+  
+  font-family: 'Inter';
+  font-size: 16px;
+  color: #E5E5E5;
+  white-space: nowrap; /* Ensures the text stays on one line */
+}
+
+
+
+/* Logout Item */
+/* Logout Item */
+.logout-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 12px;
+  width: 244px;
+  height: 48px;
+  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.07));
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+/* Logout Icon */
+.logout-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: -16px;
+}
+
+/* Logout Text Image */
+.logout-text-image {
+
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 150%; /* or whatever height fits your design */
+}
+
+.item-list1
+{
+  
+  height: 100px;
+
+}
+
+
+
+
+
+

@@ -1,0 +1,262 @@
+/* General Styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Prevent scrolling for the entire page */
+  font-family: 'Inter';
+  background: #FFFFFF;
+}
+
+.login-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* Left Side */
+.left-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 90px 140px;
+  width: 50%;
+  background: #FFFFFF;
+}
+
+.frame {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: 512px;
+}
+
+.header h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+.header p {
+  font-size: 16px;
+  color: #4B5563;
+}
+
+/* Form Styling */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-header a {
+  font-size: 16px;
+  color: #17479E;
+  text-decoration: none;
+}
+
+label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 20px 40px;
+  background: #F3F4F6;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #000000;
+  box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
+/* Buttons */
+.auth-button {
+  width: 100%;
+  padding: 20px 40px; /* Match padding with input fields */
+  background: #17479E;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+}
+
+.auth-button:hover {
+  background: #10377E;
+}
+
+/* Remember Me and Terms */
+.remember-me,
+.terms {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.remember-me label,
+.terms label {
+  font-size: 16px;
+  color: #000000;
+}
+
+/* Sign-Up or Sign-In Links */
+.signup {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.signup a {
+  font-size: 16px;
+  color: #17479E;
+  text-decoration: none;
+}
+
+.signin {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.signin a {
+  font-size: 16px;
+  color: #17479E;
+  text-decoration: none;
+}
+
+/* Right Side */
+.right-side {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  padding: 90px 80px;
+  background: linear-gradient(180deg, #17479E 0%, #10377E 100%);
+  color: #FFFFFF;
+  margin-top: -20px;
+}
+
+.slider {
+  text-align: left;
+  padding-top: 150px;
+  width: 90%;
+}
+
+.slider h2 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  color: #FFFFFF99;
+}
+
+.slider p {
+  font-size: 28px;
+  line-height: 42px;
+  font-weight: 400;
+}
+
+/* Slider Content */
+.slider-content {
+  position: relative;
+  overflow: hidden; /* Prevent overflowing content */
+  height: auto; /* Allow natural height */
+}
+
+.slide {
+  display: none; /* Only show the active slide */
+  font-size: 28px;
+  line-height: 42px;
+  font-weight: 400;
+}
+
+.slide.active {
+  display: block; /* Ensure only the active slide is visible */
+}
+
+/* Dots */
+.dots {
+  display: flex;
+  justify-content: start;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: #FFF;
+  border-radius: 50%;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.dot.active {
+  opacity: 1;
+}
+
+
+.flash-messages {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+}
+
+.flash-messages ul {
+  list-style: none;
+  padding: 0;
+}
+
+.flash-messages li {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #fff;
+  text-align: center;
+}
+
+/* Success Message */
+.flash-messages li.success {
+  background-color: #4caf50;
+}
+
+/* Error Message */
+.flash-messages li.error {
+  background-color: #f44336;
+}
+
+/* General Info */
+.flash-messages li.info {
+  background-color: #2196f3;
+}

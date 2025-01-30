@@ -1,0 +1,180 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f4f4f4; /* Light background for contrast */
+}
+ 
+.AI-Container {
+ 
+  width: calc(100% - 250px); /* Account for sidebar width and margins */
+  max-width: none; /* Remove max-width restriction */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; /* Arrange children in a column */
+  position: relative; /* Ensure proper alignment */
+  overflow: hidden;
+  margin-left: 280px;
+  margin-top: 20px;
+
+}
+ 
+ 
+ 
+.chat-container {
+  display: flex; /* Enable flexbox layout for chat container */
+  flex-direction: column; /* Arrange children in a column */
+  margin-top: 50px; /* Add margin to account for the fixed navbar height */
+  height: calc(100vh - 50px); /* Adjust height dynamically based on viewport */
+}
+ 
+.chatbox {
+  list-style-type: none;
+  padding: 10px;
+  overflow-y: auto; /* Enable scrolling */
+  flex-grow: 1; /* Allow chatbox to take available space */
+}
+ 
+.chat {
+  margin-bottom: 10px;
+  word-wrap: break-word;
+ 
+}
+ 
+ 
+.chat-incoming {
+  align-self: flex-end; /* Align to the right */
+  max-width: 70%; /* Limit message width */
+  text-align: left; /* Left-align text */
+ 
+}
+ 
+.chat-incoming p {
+  background-color: #e0e8fa; /* Light blue background */
+  padding: 10px;
+  border-radius: 10px 10px 0 10px; /* Rounded corners */
+  word-wrap: break-word; /* Break text if it's too long */
+}
+ 
+.chat-outgoing {
+  align-self: flex-start; /* Align to the left */
+  max-width: 100%; /* Limit message width */
+  text-align: left; /* Left-align text */
+  margin-left: 500px;
+}
+ 
+.chat-outgoing p {
+  background-color: #1448a8;; /* Light green background */
+  padding: 10px;
+  border-radius: 10px 10px 10px 0; /* Rounded corners */
+  word-wrap: break-word; /* Break text if it's too long */
+}
+ 
+.chat-input {
+  display: flex; /* Use flexbox for input area */
+  margin-bottom: 10px; /* Add space below the chat input */
+  gap: 10px; /* Add spacing between elements */
+  padding: 20px; /* Add padding on the sides of the input area */
+  height: 50px;
+}
+ 
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  position: relative;
+  margin-top: -20px; /* Adjust the value as needed */
+}
+
+ 
+textarea {
+ 
+  width: 100%; /* Full width */
+  padding: 12px 15px; /* Add inner padding */
+  border: 1px solid #ccc; /* Add a light border */
+  border-radius: 20px; /* Make corners rounded */
+  outline: none; /* Remove default outline */
+  font-size: 16px; /* Adjust font size */
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  resize: none; /* Disable resizing for better layout */
+  transition: border-color 0.3s ease; /* Smooth border-color transition */
+  border: 1px solid #F5F5F5; /* Add a light border */
+  height: 50px;
+  background-color:#F5F5F5;
+}
+ 
+textarea:focus {
+  border-color:None; /* Change border color on focus */
+}
+ 
+ 
+#sendBTN {
+  background-color: #3660b3; /* Button background color */
+  color: rgb(255, 252, 252); /* Button text color */
+  border: none; /* Remove default border */
+  padding: 12px 20px; /* Add inner padding */
+  border-radius: 20px; /* Make corners rounded */
+  font-size: 20px; /* Adjust font size */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  display: flex; /* Center icon inside button */
+  align-items: center;
+  justify-content: center;
+ 
+}
+ 
+#sendBTN:hover {
+  background-color: #113b8c; /* Slightly darker color on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+}
+ 
+#sendBTN:active {
+  background-color: #0e306e; /* Even darker shade on click */
+  box-shadow: none; /* Remove shadow on click */
+}
+.sticky {
+  background-color: #0d3b7e; /* Darker background when sticky */
+  height: 60px; /* Change height if needed */
+}
+ 
+ 
+/* Responsiveness */
+@media (max-width: 768px) {
+  .AI-Container {
+    width: 100%;  /* Full width on smaller screens */
+    margin-left: 0; /* Remove left margin on smaller screens */
+    padding: 15px; /* Reduced padding on smaller screens */
+  }
+}
+
+ 
+.upload-icon {
+  cursor: pointer; /* Change cursor to pointer on hover */
+  font-size: 20px; /* Adjust size of the icon */
+  display: flex; /* Centering the icon */
+  padding: 10px; /* Padding around the icon */
+  background-color: #f1f1f1; /* Background color for better visibility */
+  border-radius: 70%; /* Make it circular */
+  transition: background-color 0.3s ease; /* Smooth transition */
+  margin-right: 10px;
+  position: absolute; /* Position absolute to place it inside the textarea */
+  right: 15px; /* Position from the right side */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust for vertical centering */
+  cursor: pointer; /* Change cursor to pointer on hover */
+ 
+}
+ 
+.upload-icon:hover {
+  background-color: #ddd; /* Change background color on hover */
+}
+ 
+.upload-icon img {
+  width: 26px; /* Adjust size of the icon */
+  height: auto; /* Maintain aspect ratio */
+}
+
