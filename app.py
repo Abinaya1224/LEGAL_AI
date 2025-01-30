@@ -8,9 +8,7 @@ from datetime import datetime
 from flask import Flask, request, jsonify, send_file ,session
 import psycopg2
 from werkzeug.utils import secure_filename
-import uuid
 import hashlib
-import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import google.generativeai as genai
