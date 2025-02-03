@@ -60,10 +60,11 @@
                         <img src="{{ url_for('static', filename='images/delete.png') }}" alt="Clear all conversations" class="delete-icon">
                         <div class="item-text">Clear all conversations</div>
                     </div>
-                    <div class="logout-item">
+                    <a href="{{ url_for('logout') }}" class="logout-item">
                         <img src="{{ url_for('static', filename='images/power_settings_new.png') }}" alt="Logout Icon" class="logout-icon">
                         <img src="{{ url_for('static', filename='images/Log out.png') }}" alt="Logout Text" class="logout-text-image">
-                    </div>
+                    </a>
+                    
                 </div>
             </div>
         </div>
@@ -79,41 +80,42 @@
                 <!-- Content Block -->
                 <div class="content-block">
                     <div class="recent">Recent</div>
-                    <div class="row">
-                        <!-- Frame 111 -->
-                        <div class="frame-111">
-                            <!-- Frame 133 -->
-                            <div class="frame-133">
-                                <!-- Frame 107 -->
-                                <div class="frame-107">
-                                    <img src="{{ url_for('static', filename='images/solar_document_outline(1).png') }}" alt="Document Outline" class="solar-document-outline">
-                                </div>
-                                <!-- Frame 108 -->
-                                <div class="frame-108">
-                                    <div class="file-title">File 1</div>
+                    
+                        <!-- Frame 106 -->
+
+                        <div class="card-container">
+                            {% for file in uploaded_files %}
+                                
+                                    <!-- Frame 111 -->
+                                    <div class="frame-111">
+                                        <!-- Frame 133 -->
+                                        <div class="frame-133">
+                                            <!-- Frame 107 (Image for the file) -->
+                                            <div class="frame-107">
+                                                <img src="{{ url_for('static', filename='images/solar_document_outline(1).png') }}" alt="Document Outline" class="solar-document-outline">
+                                            </div>
+                                            <!-- Frame 108 (File Title) -->
+                                           
+                                            <div class="file-title">
+                                                {{ file.filename }}
+                                                <div class="file-date">
+                                                    {{ file.uploaded_at.strftime('%Y-%m-%d') }}
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Additional file details can be added here if needed -->
+                                           
+                                                
+                                            <!-- Link to view the file -->
+                                             
+                                            
+                                        </div>
                                     
                                 </div>
-
-                            </div>
+                            {% endfor %}
                         </div>
-                        <!-- Frame 106 -->
-                       
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-                
-     
-
-
-   
-
-                
-                
-                
-            </div>
-        </div>
+                        
     </div>
+</div>
 </body>
 </html>

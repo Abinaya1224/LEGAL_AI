@@ -56,11 +56,8 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 0px;
-    gap: 16px;
     width: 100%;
     height: auto;
-    flex: none;
 }
 
 /* Recent */
@@ -88,25 +85,8 @@
     top:-10px;
 }
 
-/* Frame 111 */
-.frame-111 {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    gap: 12px;
-    width: 271px;
-    min-width: 280px;
-    height: 58px;
-    background: rgba(41, 84, 160, 0.1);
-    border: 1px solid #2954A0;
-    border-radius: 8px;
-    flex: none;
-    flex-grow: 1;
-    margin-top: -20px; 
-}
+ 
+
 
 /* Frame 133 */
 .frame-133 {
@@ -141,7 +121,7 @@
     
     width: 24px;
     height: 24px;
-    background: #2954A0;
+    background: #063196;
 }
 
 /* Frame 108 */
@@ -163,7 +143,28 @@
     line-height: 24px;
     letter-spacing: 0.02em;
     color: #333333;
+    white-space: nowrap; 
+    overflow: hidden;     /* Hide any overflowed text */
+    text-overflow: ellipsis;
+    width: 100%; 
+    text-align: center;
+    display: inline-block;
+    
+    
+    
 }
+
+
+.file-date {
+    
+    font-family: 'Inter';
+    font-size: 16px;
+    color: #333333;
+    margin-top: 5px;
+}
+
+
+
 
 /* Frame 109 */
 .frame-109 {
@@ -224,4 +225,33 @@
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     color: #666666;
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    flex-wrap: wrap; /* Allows wrapping to next row */
+    justify-content: flex-start; /* Align from left */
+    gap: 15px; /* Space between cards */
+    padding: 10px;
+    width: 100%; /* Ensures it takes full width */
+    overflow: visible; /* Ensures cards are not hidden */
+}
+
+/* Individual Card */
+.frame-111 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 12px;
+    width: 271px; /* Fixed width */
+    min-width: 271px;
+    height: auto;
+    background: rgba(41, 84, 160, 0.1);
+    border: 1px solid #2954A0;
+    border-radius: 8px;
+    margin-top: 10px;
+    flex-shrink: 0; /* Prevents shrinking */
 }

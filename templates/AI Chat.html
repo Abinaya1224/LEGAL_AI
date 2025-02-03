@@ -61,10 +61,10 @@
                         <img src="{{ url_for('static', filename='images/delete.png') }}" alt="Clear all conversations" class="delete-icon">
                         <div class="item-text">Clear all conversations</div>
                     </div>
-                    <div class="logout-item">
+                    <a href="{{ url_for('logout') }}" class="logout-item">
                         <img src="{{ url_for('static', filename='images/power_settings_new.png') }}" alt="Logout Icon" class="logout-icon">
                         <img src="{{ url_for('static', filename='images/Log out.png') }}" alt="Logout Text" class="logout-text-image">
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -82,11 +82,13 @@
                         <label for="fileUpload" class="upload-icon">
                             
                             <img src="{{ url_for('static', filename='images/proicons_attach.png') }}"alt="Upload">
+
+                            
                            
          
                        
                         </label>
-                        <textarea id="userInput" rows="1" placeholder="Ask anything..."></textarea>
+                        <textarea id="userInput" rows="1" placeholder="Pls upload a document..."></textarea>
                     </div>
                     <button id="sendBTN" title="Send Message">
                         <img src="{{ url_for('static', filename='images/send.png') }}" alt="Send Message">

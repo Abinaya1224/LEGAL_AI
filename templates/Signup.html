@@ -43,16 +43,13 @@
             <label for="confirm-password">Confirm Password</label>
             <input type="password" id="confirm-password" name="confirm_password" placeholder="••••••••••••••••••••••" required>
           </div>
-          <div class="terms">
-            <input type="checkbox" id="terms" name="terms" value="on" required>
-            <label for="terms">I agree to the terms and conditions</label>
-          </div>
           <button type="submit" class="auth-button">Sign Up</button>
           <div class="signin">
             <span>Already have an account?</span>
             <a href="{{ url_for('signin') }}">Sign In</a>
           </div>
         </form>
+        
         
       </div>
     </div>

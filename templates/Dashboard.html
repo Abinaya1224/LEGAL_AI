@@ -60,10 +60,10 @@
                         <img src="{{ url_for('static', filename='images/delete.png') }}" alt="Clear all conversations" class="delete-icon">
                         <div class="item-text">Clear all conversations</div>
                     </div>
-                    <div class="logout-item">
+                    <a href="{{ url_for('logout') }}" class="logout-item">
                         <img src="{{ url_for('static', filename='images/power_settings_new.png') }}" alt="Logout Icon" class="logout-icon">
                         <img src="{{ url_for('static', filename='images/Log out.png') }}" alt="Logout Text" class="logout-text-image">
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

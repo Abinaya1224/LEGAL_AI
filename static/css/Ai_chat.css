@@ -8,7 +8,7 @@ body {
 }
  
 .AI-Container {
- 
+  Margin: 0 50px;
   width: calc(100% - 250px); /* Account for sidebar width and margins */
   max-width: none; /* Remove max-width restriction */
   background-color: #fff;
@@ -18,11 +18,10 @@ body {
   flex-direction: column; /* Arrange children in a column */
   position: relative; /* Ensure proper alignment */
   overflow: hidden;
-  margin-left: 280px;
-  margin-top: 20px;
-
+  margin-left: 20%;
+  margin-right: 0;
+  margin-top:50px;
 }
- 
  
  
 .chat-container {
@@ -34,7 +33,7 @@ body {
  
 .chatbox {
   list-style-type: none;
-  padding: 10px;
+  padding-right:30px ;
   overflow-y: auto; /* Enable scrolling */
   flex-grow: 1; /* Allow chatbox to take available space */
 }
@@ -87,7 +86,7 @@ body {
   align-items: center;
   flex-grow: 1;
   position: relative;
-  margin-top: -20px; /* Adjust the value as needed */
+  margin-top: -60px; /* Adjust the value as needed */
 }
 
  
@@ -124,6 +123,7 @@ textarea:focus {
   display: flex; /* Center icon inside button */
   align-items: center;
   justify-content: center;
+  margin-top: -30px; 
  
 }
  
