@@ -5,7 +5,7 @@ from itsdangerous import URLSafeTimedSerializer  # Add this import here
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
 from datetime import datetime
-from flask import Flask, request, jsonify, send_file ,session
+from flask import Flask, request, jsonify, send_file ,session, send_file
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
 import psycopg2
 from werkzeug.utils import secure_filename
@@ -92,39 +92,37 @@ def home():
 def load_user(user_id):
     return User.query.get(int(user_id))  # Fetch user by ID
 
-
-
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-       
+        email = request.form.get('email', '').strip()
+        password = request.form.get('password', '').strip()
 
-        # Email validation
-        email_regex = r"^[^\s@]+@[^\s@]+\.[^\s@]+$"
-        if not re.match(email_regex, email):
-            flash("Invalid email format.", "error")
+        # Validate required fields (email and password)
+        if not email or not password:
+            flash("Email and password are required.", "error")
             return redirect(url_for('signin'))
 
-        # Password validation (min 8 characters, 1 letter, 1 number)
-        password_regex = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$"
-        if not re.match(password_regex, password):
-            flash("Password must be at least 8 characters long and include at least one letter and one number.", "error")
-            return redirect(url_for('signin'))
+        try:
+            # Check if user exists
+            user = User.query.filter_by(email=email).first()
 
-        # Check user in database
-        user = User.query.filter_by(email=email).first()
-        
+            if not user:
+                flash("Email not registered.", "error")
+                return redirect(url_for('signin'))  # Email does not exist
 
-        if user and user.check_password(password):
-            session['user_id'] = user.id 
-            
-            
-           
+            # Check if the password matches the stored hashed password
+            if not user.check_password(password):  # Assuming check_password() verifies hashed passwords
+                flash("Incorrect password.", "error")
+                return redirect(url_for('signin'))  # Incorrect password
+
+            # Successful login
+            session['user_id'] = user.id  # Store user session
             return redirect(url_for('dashboard'))  # Redirect to dashboard
-        else:
-            flash("Invalid credentials, please try again.", "error")
+        
+        except Exception as e:
+            flash("An error occurred while signing in. Please try again later.", "error")
+            print(f"Signin error: {e}")  # Debugging purpose
 
     return render_template("Signin.html")
 
@@ -132,37 +130,63 @@ def signin():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        confirm_password = request.form.get('confirm_password')
+        name = request.form.get('name', '').strip()
+        email = request.form.get('email', '').strip()
+        password = request.form.get('password', '').strip()
+        confirm_password = request.form.get('confirm_password', '').strip()
 
-        # Validation (removed terms check)
+        # Validate required fields
         if not all([name, email, password, confirm_password]):
             flash("All fields are required!", "error")
-            return redirect(url_for('signup'))  # Stay on signup page
+            return redirect(url_for('signup'))
 
+        # Validate name (only alphabets, spaces allowed between words)
+        name_regex = r"^[A-Za-z]+(?:\s[A-Za-z]+)*$"
+        if not re.match(name_regex, name):
+            flash("Name must contain only alphabets (no numbers or special characters).", "error")
+            return redirect(url_for('signup'))
+
+        # Validate email format
+        email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        if not re.match(email_regex, email):
+            flash("Invalid email format!", "error")
+            return redirect(url_for('signup'))
+
+        # Validate password strength
+        password_regex = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$"
+        if not re.match(password_regex, password):
+            flash("Password must be at least 8 characters long, contain at least one letter and one number.", "error")
+            return redirect(url_for('signup'))
+
+        # Check if passwords match
         if password != confirm_password:
             flash("Passwords do not match!", "error")
-            return redirect(url_for('signup'))  # Stay on signup page
+            return redirect(url_for('signup'))
 
         # Check if email already exists
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             flash("Email already registered. Please sign in.", "error")
-            return redirect(url_for('signin'))  # Redirect to sign-in page
+            return redirect(url_for('signin'))
 
-        # Save new user
-        new_user = User(name=name, email=email)
-        new_user.set_password(password)
-        db.session.add(new_user)
-        db.session.commit()
+        try:
+            # Save new user
+            new_user = User(name=name, email=email)
+            new_user.set_password(password)  # Assuming set_password() hashes the password
+            db.session.add(new_user)
+            db.session.commit()
 
-        flash("Account created successfully! Please sign in.", "success")
-        return redirect(url_for('signin'))  # Redirect to sign-in page
+            # Optionally log the user in after signup
+            session['user_id'] = new_user.id
+
+            flash("Account created successfully! You are now signed in.", "success")
+            return redirect(url_for('dashboard'))  # Redirect to dashboard
+
+        except Exception as e:
+            db.session.rollback()
+            flash("An error occurred. Please try again.", "error")
 
     return render_template('Signup.html')
-
 
 
 
@@ -244,7 +268,11 @@ def dashboard():
         # Handle case where the user is not found (should not happen if user_id is valid)
         name = "Guest"  # Default name if the user is not found
 
-    return render_template("Dashboard.html", current_date=current_date, name=name)
+    # Fetch the 4 most recent uploaded files for the logged-in user
+    recent_files = UploadedFile.query.filter_by(user_id=user.id).order_by(UploadedFile.uploaded_at.desc()).limit(4).all()
+
+    return render_template("Dashboard.html", current_date=current_date, name=name, recent_files=recent_files)
+
 
 @app.route('/documents')
 def documents():
@@ -255,11 +283,16 @@ def documents():
 
     # Fetch the user from the database using user_id from the session
     user = User.query.get(session['user_id'])
-    
-    # Fetch all uploaded files for the logged-in user
-    uploaded_files = UploadedFile.query.filter_by(user_id=user.id).all()
 
-    return render_template('document.html', uploaded_files=uploaded_files)
+    # Fetch the last 4 uploaded files (for the card layout)
+    recent_files = UploadedFile.query.filter_by(user_id=user.id).order_by(UploadedFile.uploaded_at.desc()).limit(4).all()
+
+    # Fetch all uploaded files (for the list layout)
+    all_files = UploadedFile.query.filter_by(user_id=user.id).all()
+
+    # Pass both recent_files and all_files to the template
+    return render_template('document.html', recent_files=recent_files, all_files=all_files)
+
 
 @app.route('/view/<file_id>')
 def view_file(file_id):

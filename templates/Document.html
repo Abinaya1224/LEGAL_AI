@@ -83,37 +83,59 @@
                     
                         <!-- Frame 106 -->
 
-                        <div class="card-container">
-                            {% for file in uploaded_files %}
-                                
-                                    <!-- Frame 111 -->
-                                    <div class="frame-111">
-                                        <!-- Frame 133 -->
-                                        <div class="frame-133">
-                                            <!-- Frame 107 (Image for the file) -->
-                                            <div class="frame-107">
-                                                <img src="{{ url_for('static', filename='images/solar_document_outline(1).png') }}" alt="Document Outline" class="solar-document-outline">
-                                            </div>
-                                            <!-- Frame 108 (File Title) -->
-                                           
-                                            <div class="file-title">
-                                                {{ file.filename }}
-                                                <div class="file-date">
-                                                    {{ file.uploaded_at.strftime('%Y-%m-%d') }}
-                                                </div>
-                                            </div>
-                                            
-                                            <!-- Additional file details can be added here if needed -->
-                                           
-                                                
-                                            <!-- Link to view the file -->
-                                             
-                                            
-                                        </div>
-                                    
-                                </div>
-                            {% endfor %}
-                        </div>
+                        <!-- Card layout for the recent 4 files -->
+<div class="card-container">
+    {% for file in recent_files %}
+        <!-- Frame 111 -->
+        <div class="frame-111">
+            <!-- Frame 133 -->
+            <div class="frame-133">
+                <!-- Frame 107 (Image for the file) -->
+                <div class="frame-107">
+                    <img src="{{ url_for('static', filename='images/solar.png') }}" alt="Document Outline" class="solar">
+                </div>
+                <!-- Frame 108 (File Title) -->
+                <div class="file-title">
+                    {{ file.filename }}
+                    <div class="file-date">
+                        {{ file.uploaded_at.strftime('%Y-%m-%d') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Header for All Files -->
+<div class="frame-140">
+    <div class="all-files">All Files</div>
+</div>
+
+<!-- File List (Table or List) -->
+<div class="file-list">
+    <table>
+        <thead>
+            <tr>
+                <th>S.no</th>
+                <th>Filename</th>
+                <th>Uploaded At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in all_files %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ file.filename }}</td>
+                    <td>{{ file.uploaded_at.strftime('%Y-%m-%d') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+                     
+                        
+                       
                         
     </div>
 </div>

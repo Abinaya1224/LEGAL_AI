@@ -89,6 +89,16 @@ html, body {
   margin: 0 auto;
   width: 244px;
   height: 194px;
+  
+}
+
+.item-list a {
+  text-decoration: none; /* Removes underline */
+  color: inherit; /* Ensures text color remains consistent */
+}
+
+.item-list a:hover {
+  text-decoration: none; /* Prevents underline on hover */
 }
 
 /* Separator */
@@ -132,9 +142,17 @@ html, body {
   gap: 12px;
   width: 244px;
   height: 48px;
-  background: rgba(41, 84, 160, 0.79);
+  
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.07);
   border-radius: 4px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect */
+.item:hover {
+  background-color:#17479E; /* Light gray background on hover */
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15); /* Increased shadow for depth */
+  cursor: pointer;
 }
 
 /* Material Icon */
