@@ -2,15 +2,21 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import uuid
+from flask_login import UserMixin
+
 
 
 db = SQLAlchemy()
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
+    
+    
+    # Relationship: A user can upload many files
+    uploaded_files = db.relationship('UploadedFile', backref='user', lazy=True)
 
     def set_password(self, password):
         """Encrypt the password."""
@@ -21,6 +27,9 @@ class User(db.Model):
         return check_password_hash(self.password_hash, password)
     
 
+    
+
+
 class UploadedFile(db.Model):
     __tablename__ = 'uploaded_files'
 
@@ -30,6 +39,9 @@ class UploadedFile(db.Model):
     uploaded_at = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)  # Timestamp, defaults to current time
     filename = db.Column(db.String(255), nullable=False)  # Filename
     file_hash = db.Column(db.String(255), nullable=False, unique=True)  # File hash for uniqueness
+    
+    # Add user_id foreign key to link files to users
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return f"<UploadedFile {self.filename}>"

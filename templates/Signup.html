@@ -4,56 +4,66 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/Signin.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 </head>
 <body>
-  <div class="flash-messages">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul>
-          {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-  </div>
+  
+
+
   <div class="login-container">
+    
+    
+
     <!-- Left Side -->
-    <div class="left-side">
+    <div class="left-side" style="height: 100vh; overflow-y: auto;">
       <div class="frame">
         <div class="header">
           <h1>Sign Up</h1>
           <p>Create a new account to get started. It only takes a few moments!</p>
         </div>
+        
         <form class="form" method="POST" action="{{ url_for('signup') }}">
           <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" placeholder="John Doe" required>
+            <small id="name-hint" class="hint"></small>
           </div>
+          
           <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="john_doe@example.com" required>
+            
           </div>
+          
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="••••••••••••••••••••••" required>
-          </div>
-          <div class="form-group">
+            <div class="password-container">
+                <input type="password" id="password" name="password" placeholder="•••••••••••••">
+                <i class="fa fa-eye toggle-password"></i> 
+            </div>
+        </div>
+        
+        <div class="form-group">
             <label for="confirm-password">Confirm Password</label>
-            <input type="password" id="confirm-password" name="confirm_password" placeholder="••••••••••••••••••••••" required>
-          </div>
-          <div class="terms">
-            <input type="checkbox" id="terms" name="terms" value="on" required>
-            <label for="terms">I agree to the terms and conditions</label>
-          </div>
+            <div class="password-container">
+                <input type="password" id="confirm-password" name="confirm_password" placeholder="•••••••••••••">
+                <i class="fa fa-eye toggle-password"></i>
+            </div>
+        </div>
+        
+          
           <button type="submit" class="auth-button">Sign Up</button>
           <div class="signin">
             <span>Already have an account?</span>
             <a href="{{ url_for('signin') }}">Sign In</a>
           </div>
         </form>
-        
       </div>
     </div>
     <!-- Right Side -->
@@ -72,6 +82,7 @@
         </div>
       </div>
     </div>
+    
   </div>
 
   <script src="{{ url_for('static', filename='js/Signin.js') }}"></script>
