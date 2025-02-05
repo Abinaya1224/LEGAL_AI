@@ -1,27 +1,18 @@
-/* General Layout Fix */
-/* General Layout Fix */
 html, body {
-  margin: -12px;
-  padding: 0;
   height: 100%;
-  width: 100%;
-  overflow: hidden; /* Prevent scrolling for the entire page */
-  display: flex; /* Ensure full-page layout with flexbox */
+  overflow: hidden;
 }
 
 
 /* Sidebar */
 .sidebar {
-  position: fixed; /* Fix the sidebar in place */
-  top: 0;
-  left: 0; /* Ensures the sidebar starts at the left edge */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   padding: 24px 16px;
   gap: 24px;
-  width: 276px;
+  max-width: 276px;
   height: 100vh; /* Full viewport height */
   background: linear-gradient(180deg, #17479E 0%, #10377E 100%);
   overflow-y: auto; /* Allow vertical scrolling if content exceeds height */
@@ -54,17 +45,10 @@ html, body {
 
 /* Legal AI */
 .legal-ai {
-  width: 71px; /* Ensure this is wide enough for the text */
-  height: 4px;
-  font-family: 'Inter';
-  font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 150%;
-  text-transform: uppercase;
   color: #ffffff;
-  white-space: nowrap;
-   /* Prevents the text from wrapping to the next line */
 }
 
 /* Bot */
@@ -106,6 +90,7 @@ html, body {
   width: 244px;
   height: 0;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0;
 }
 
 /* Frame 6 */
@@ -164,10 +149,6 @@ html, body {
 
 /* Item Text */
 .item-text {
-  width: 83px;
-  height: 24px;
-  font-family: 'Inter';
-  font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
@@ -178,15 +159,10 @@ html, body {
 .delete {
   display: flex;
   align-items: center;
-  width: 171px;
-  height: 24px;
-  font-family: 'Inter';
   font-weight: 400;
   font-size: 16px;
-  line-height: 150%;  /* Same as box height (24px) */
+  line-height: 150%;
   color: #E5E5E5;
-/* Ensures the text stays on one line */
-  gap: 12px; /* Adds space between the icon and the text */
 }
 
 /* Delete Icon Styling */

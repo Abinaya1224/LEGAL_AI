@@ -8,19 +8,13 @@ body {
 }
  
 .AI-Container {
-  Margin: 0 50px;
-  width: calc(100% - 250px); /* Account for sidebar width and margins */
-  max-width: none; /* Remove max-width restriction */
+  flex: 1;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column; /* Arrange children in a column */
-  position: relative; /* Ensure proper alignment */
-  overflow: hidden;
-  margin-left: 20%;
-  margin-right: 0;
-  margin-top:50px;
+  flex-direction: column;
+  position: relative;
 }
  
  
@@ -29,13 +23,14 @@ body {
   flex-direction: column; /* Arrange children in a column */
   margin-top: 50px; /* Add margin to account for the fixed navbar height */
   height: calc(100vh - 50px); /* Adjust height dynamically based on viewport */
+  padding: 0 20px 20px;
 }
  
 .chatbox {
   list-style-type: none;
-  padding-right:30px ;
   overflow-y: auto; /* Enable scrolling */
   flex-grow: 1; /* Allow chatbox to take available space */
+  padding: 0;
 }
  
 .chat {
@@ -68,6 +63,7 @@ body {
  
 .chat-outgoing p {
   background-color: #1448a8;; /* Light green background */
+  color: #ffffff;
   padding: 10px;
   border-radius: 10px 10px 10px 0; /* Rounded corners */
   word-wrap: break-word; /* Break text if it's too long */
@@ -112,27 +108,26 @@ textarea:focus {
 }
  
  
-#sendBTN {
+.sendBtn {
   background-color: #3660b3; /* Button background color */
   color: rgb(255, 252, 252); /* Button text color */
   border: none; /* Remove default border */
-  padding: 12px 20px; /* Add inner padding */
-  border-radius: 20px; /* Make corners rounded */
+  padding: 12px 12px; /* Add inner padding */
+  border-radius: 10px; /* Make corners rounded */
   font-size: 20px; /* Adjust font size */
   cursor: pointer; /* Change cursor to pointer on hover */
   display: flex; /* Center icon inside button */
   align-items: center;
   justify-content: center;
-  margin-top: -30px; 
  
 }
  
-#sendBTN:hover {
+.sendBtn:hover {
   background-color: #113b8c; /* Slightly darker color on hover */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
 }
  
-#sendBTN:active {
+.sendBtn:active {
   background-color: #0e306e; /* Even darker shade on click */
   box-shadow: none; /* Remove shadow on click */
 }
@@ -178,3 +173,75 @@ textarea:focus {
   height: auto; /* Maintain aspect ratio */
 }
 
+
+
+
+/* Chat wrapper */
+
+.nochat-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+}
+
+.nochat-description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.nochat-title {
+  font-size: 48px;
+  line-height: 120%;
+  margin-bottom: 0;
+  color: #333;
+}
+
+.nochat-helper {
+  font-size: 16px;
+  line-height: 150%;
+  color: 504c4c;
+}
+
+.chatinput-wrapper {
+  display: flex;
+  align-self: stretch;
+  justify-content: center;
+ 
+}
+
+.chatinput-wrapper > div {
+  flex: 1;
+  max-width: 720px;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid rgba(51,51,51, .5);
+  border-radius: 10px;
+  align-items: center;
+  padding-inline: 12px;
+}
+
+.chatinput-item {
+  flex: 1;
+  appearance: none;
+  background-color: #fff;
+  box-shadow: none;
+  border: 0;
+}
+
+.chatinput-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+
+.chatinput-upload {
+  margin-bottom: 0;
+  padding: 12px;
+}

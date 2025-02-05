@@ -1,0 +1,83 @@
+/* Typography */
+
+h5 {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 150%;
+    letter-spacing: .4px;
+    margin-bottom: 16px;
+}
+
+
+
+.content-area {
+    padding: 16px;
+    background-color: #f6f6f6;
+    flex: 1;
+    max-height: 100dvh;
+    overflow: auto;
+}
+
+.page-header {
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(51,51,51,0.3);
+    margin-bottom: 40px;
+}
+
+.page-header h2 {
+    font-size: 32px;
+    color: #333333;
+    margin-bottom: 0;
+}
+
+
+/* File Cards */
+
+.recent-file {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style-type: none;
+}
+
+.recent-file__list {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    background-color: rgba(41,84,160,.1);
+    border: 1px solid #2954A0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    gap: 12px;
+}
+
+.recent-file__description {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.recent-file__icon {
+    background-color: rgba(41, 84,160, .1);
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 0;
+}
+
+.recent-file__details {
+    margin-bottom: 0;
+    color: rgba(51,51,51,.8);
+    font-size: 12px;
+}
+
+.recent-file__name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0;
+    max-width: 200px;
+    color: #333;
+    font-size: 16px;
+    font-weight: 400;
+}

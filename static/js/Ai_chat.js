@@ -1,109 +1,129 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const chatInput = document.getElementById('userInput');
-  const chatbox = document.getElementById('chatbox');
-  const sendButton = document.getElementById('sendBTN');
-  const fileUploadInput = document.getElementById('fileUpload');
+    // Selecting Elements
+    const noChatContainer = document.querySelector(".nochat-container");
+    const chatContainer = document.querySelector(".chat-container");
+    const chatbox = document.getElementById('chatbox');
 
-  let currentFileId = null; // Store the latest uploaded file_id
+    const inputs = document.querySelectorAll(".chatinput-item");
+    const sendButtons = document.querySelectorAll(".sendBtn");
+    const fileUploads = document.querySelectorAll("input[type='file']");
 
-  // Function to send a message
-  async function sendMessage() {
-      const message = chatInput.value.trim();
-      if (!message) return;
+    let currentFileId = null; // Store latest uploaded file ID
 
-      if (!currentFileId) {
-          alert("Please upload a document first.");
-          return;
-      }
+    // Function to show chat container
+    function showChatContainer() {
+        noChatContainer.classList.add("d-none");
+        chatContainer.classList.remove("d-none");
+    }
 
-      // Display user message in the chatbox
-      const userMessageElem = document.createElement('li');
-      userMessageElem.classList.add('chat-outgoing', 'chat');
-      userMessageElem.innerHTML = `<p>${message}</p>`;
-      chatbox.appendChild(userMessageElem);
+    // Function to send message
+    async function sendMessage(inputElement) {
+        const message = inputElement.value.trim();
+        if (!message) return;
 
-      chatInput.value = ''; // Clear input field
+        if (!currentFileId) {
+            alert("Please upload a document first.");
+            return;
+        }
 
-      // Send the message to the server with file_id
-      try {
-          const response = await fetch('/chat', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ message, file_id: currentFileId }),
-          });
+        // Display user message
+        const userMessageElem = document.createElement('li');
+        userMessageElem.classList.add('chat-outgoing', 'chat');
+        userMessageElem.innerHTML = `<p>${message}</p>`;
+        chatbox.appendChild(userMessageElem);
 
-          if (!response.ok) {
-              throw new Error(`Error: ${response.status}`);
-          }
+        inputElement.value = ''; // Clear input
 
-          const data = await response.json();
-          const aiMessageElem = document.createElement('li');
-          aiMessageElem.classList.add('chat-incoming', 'chat');
-          aiMessageElem.innerHTML = `<p>${data.response}</p>`;
-          chatbox.appendChild(aiMessageElem);
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message, file_id: currentFileId }),
+            });
 
-          chatbox.scrollTop = chatbox.scrollHeight;
-      } catch (error) {
-          console.error('Error:', error);
-          const errorMessageElem = document.createElement('li');
-          errorMessageElem.classList.add('chat-incoming', 'chat');
-          errorMessageElem.innerHTML = `<p>Sorry, something went wrong. Please try again later.</p>`;
-          chatbox.appendChild(errorMessageElem);
-          chatbox.scrollTop = chatbox.scrollHeight;
-      }
-  }
+            if (!response.ok) throw new Error(`Error: ${response.status}`);
 
-  sendButton.addEventListener('click', sendMessage);
+            const data = await response.json();
+            const aiMessageElem = document.createElement('li');
+            aiMessageElem.classList.add('chat-incoming', 'chat');
+            aiMessageElem.innerHTML = `<p>${data.response}</p>`;
+            chatbox.appendChild(aiMessageElem);
 
-  chatInput.addEventListener('keypress', (event) => {
-      if (event.key === 'Enter') {
-          event.preventDefault();
-          sendMessage();
-      }
-  });
+            chatbox.scrollTop = chatbox.scrollHeight;
+        } catch (error) {
+            console.error('Error:', error);
+            const errorMessageElem = document.createElement('li');
+            errorMessageElem.classList.add('chat-incoming', 'chat');
+            errorMessageElem.innerHTML = `<p>Sorry, something went wrong. Please try again later.</p>`;
+            chatbox.appendChild(errorMessageElem);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+    }
 
-  // Handle file upload
-  fileUploadInput.addEventListener('change', async (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
+    // Attach event listeners to multiple inputs & buttons
+    sendButtons.forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+            showChatContainer();
+            sendMessage(inputs[index]);
+        });
+    });
 
-      // Display file upload message
-      const uploadMessageElem = document.createElement('li');
-      uploadMessageElem.classList.add('chat-outgoing', 'chat');
-      uploadMessageElem.innerHTML = `<p>Uploading document: ${file.name}...</p>`;
-      chatbox.appendChild(uploadMessageElem);
+    inputs.forEach((input, index) => {
+        input.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                showChatContainer();
+                sendMessage(inputs[index]);
+            }
+        });
 
-      const formData = new FormData();
-      formData.append('file', file);
+        input.addEventListener("input", function () {
+            if (input.value.trim() !== "") showChatContainer();
+        });
+    });
 
-      try {
-          const uploadResponse = await fetch('/upload', {
-              method: 'POST',
-              body: formData,
-          });
+    // Handle file uploads
+    fileUploads.forEach(fileInput => {
+        fileInput.addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
 
-          if (!uploadResponse.ok) {
-              throw new Error(`Error: ${uploadResponse.status}`);
-          }
+            showChatContainer();
 
-          const uploadData = await uploadResponse.json();
-          currentFileId = uploadData.file_id; // Store file_id for future requests
+            // Display file upload message
+            const uploadMessageElem = document.createElement('li');
+            uploadMessageElem.classList.add('chat-outgoing', 'chat');
+            uploadMessageElem.innerHTML = `<p>Uploading document: ${file.name}...</p>`;
+            chatbox.appendChild(uploadMessageElem);
 
-          const uploadSuccessMessageElem = document.createElement('li');
-          uploadSuccessMessageElem.classList.add('chat-incoming', 'chat');
-          uploadSuccessMessageElem.innerHTML = `<p>File ${file.name} uploaded successfully.</p>`;
-          chatbox.appendChild(uploadSuccessMessageElem);
+            const formData = new FormData();
+            formData.append('file', file);
 
-          chatbox.scrollTop = chatbox.scrollHeight;
-      } catch (error) {
-          console.error('Upload Error:', error);
-          const uploadErrorMessageElem = document.createElement('li');
-          uploadErrorMessageElem.classList.add('chat-incoming', 'chat');
-          uploadErrorMessageElem.innerHTML = `<p>Sorry, there was an error uploading the file.</p>`;
-          chatbox.appendChild(uploadErrorMessageElem);
-          chatbox.scrollTop = chatbox.scrollHeight;
-      }
-  });
+            try {
+                const uploadResponse = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!uploadResponse.ok) throw new Error(`Error: ${uploadResponse.status}`);
+
+                const uploadData = await uploadResponse.json();
+                currentFileId = uploadData.file_id;
+
+                const uploadSuccessMessageElem = document.createElement('li');
+                uploadSuccessMessageElem.classList.add('chat-incoming', 'chat');
+                uploadSuccessMessageElem.innerHTML = `<p>File ${file.name} uploaded successfully.</p>`;
+                chatbox.appendChild(uploadSuccessMessageElem);
+
+                chatbox.scrollTop = chatbox.scrollHeight;
+            } catch (error) {
+                console.error('Upload Error:', error);
+                const uploadErrorMessageElem = document.createElement('li');
+                uploadErrorMessageElem.classList.add('chat-incoming', 'chat');
+                uploadErrorMessageElem.innerHTML = `<p>Sorry, there was an error uploading the file.</p>`;
+                chatbox.appendChild(uploadErrorMessageElem);
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+        });
+    });
 });
-
-

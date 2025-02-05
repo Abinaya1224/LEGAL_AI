@@ -179,8 +179,8 @@ def signup():
             # Optionally log the user in after signup
             session['user_id'] = new_user.id
 
-            flash("Account created successfully! You are now signed in.", "success")
-            return redirect(url_for('dashboard'))  # Redirect to dashboard
+            flash("Account created successfully! ", "success")
+            return redirect(url_for('signin'))  
 
         except Exception as e:
             db.session.rollback()
@@ -245,6 +245,8 @@ def logout():
     logout_user()
     flash("You have been logged out.", "success")
     return redirect(url_for('signin'))
+
+
 
 
 

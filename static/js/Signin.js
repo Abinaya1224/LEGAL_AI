@@ -55,3 +55,26 @@ document.querySelector(".form").addEventListener("submit", function(event) {
     }
 });
 
+// Get the elements for both password fields and eye icons
+document.addEventListener("DOMContentLoaded", function () {
+  // Add event listener for both the 'New Password' and 'Confirm Password' fields
+  document.querySelectorAll(".toggle-password").forEach((toggle) => {
+      toggle.addEventListener("click", function () {
+          // Get the associated password input field
+          const passwordInput = this.previousElementSibling;  
+
+          // Toggle the password visibility
+          if (passwordInput.type === "password") {
+              passwordInput.type = "text";  // Show password
+              this.classList.replace("fa-eye", "fa-eye-slash");  // Change icon to 'eye-slash'
+          } else {
+              passwordInput.type = "password";  // Hide password
+              this.classList.replace("fa-eye-slash", "fa-eye");  // Change icon back to 'eye'
+          }
+      });
+  });
+});
+
+
+
+
