@@ -29,19 +29,6 @@ html, body {
   height: 12px;
 }
 
-/* Logo */
-.logo {
-  width: 48px;
-  height: 1px;
-  /* Se logo background color */
-}
-
-/* Vector (Logo) */
-.vector {
-  width: 100%;
-  height: 100%;
-  background-color: #ffffff; /* Logo design color */
-}
 
 /* Legal AI */
 .legal-ai {
@@ -206,23 +193,16 @@ html, body {
 
 /* Logout Text Image */
 .logout-text-image {
-
-
-font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 16px;
-line-height: 150%; /* or whatever height fits your design */
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%; /* or whatever height fits your design */
 }
 
-.item-list1
-{
-  
-  height: 100px;
-
+.logo-image {
+  width: 32px;
 }
-
-
 
 
 

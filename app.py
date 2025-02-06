@@ -5,7 +5,7 @@ from itsdangerous import URLSafeTimedSerializer  # Add this import here
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
 from datetime import datetime
-from flask import Flask, request, jsonify, send_file ,session, send_file
+from flask import Flask, request, jsonify, send_file ,session, send_file, send_from_directory, current_app, abort, request
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
 import psycopg2
 from werkzeug.utils import secure_filename
@@ -20,6 +20,9 @@ import pytesseract
 from PIL import Image
 from gtts import gTTS
 import re 
+import os
+import urllib.parse
+import io
 
 
 
@@ -50,6 +53,7 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 
 
 pytesseract.pytesseract.tesseract_cmd = r'C:/Users/rabinaya/AppData/Local/Programs/Tesseract-OCR/tesseract.exe'
+ 
 
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
 
@@ -296,6 +300,22 @@ def documents():
     return render_template('document.html', recent_files=recent_files, all_files=all_files)
 
 
+
+
+@app.route('/download/<string:file_id>', methods=['GET'])
+def download_file(file_id):
+    # Retrieve the file from the database using file_id or file_hash
+    file = UploadedFile.query.filter_by(file_hash=file_id).first()  # Adjust if necessary
+    
+    if not file:
+        abort(404, description="File not found")
+    
+    # Convert file data into a readable stream (binary data from database)
+    file_data = io.BytesIO(file.content)
+    
+    # Return the file as an attachment for download
+    return send_file(file_data, as_attachment=True, download_name=file.filename)
+
 @app.route('/view/<file_id>')
 def view_file(file_id):
     try:
@@ -320,7 +340,6 @@ def ai_chat():
 # Helper function to compute file hash
 def compute_file_hash(file_data):
     return hashlib.sha256(file_data).hexdigest()
-
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -391,6 +410,28 @@ def extract_text_from_scanned_pdf(pdf_bytes):
         print(f"Error extracting text from scanned PDF: {e}")
         return None
 
+ 
+# Function to extract text from scanned PDF using Tesseract
+def extract_text_from_scanned_pdf(pdf_bytes):
+    try:
+        pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")  # Use the 'stream' parameter for bytes
+        text = ""
+        for page in pdf_document:
+            pix = page.get_pixmap()
+            img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+            custom_config = r'--oem 3 --psm 11'
+            text += pytesseract.image_to_string(img, config=custom_config) + "\n"
+        pdf_document.close()
+        return text
+    except Exception as e:
+        print(f"Error extracting text from scanned PDF: {e}")
+        return None
+
+
+
+
+
+
 
 @app.route('/chat', methods=['POST'])
 def chat_response():
@@ -398,18 +439,26 @@ def chat_response():
     file_id = request.json.get('file_id')  # Get file_id from request
 
     if not user_input:
-        return jsonify({"response": "Please enter a valid query. 😕"}), 400
+        return jsonify({
+            "response": "Hey there! 😊 Please enter a valid query so I can assist you. 💡"
+        }), 400
 
     if not file_id:
-        return jsonify({"response": "No document selected. Please upload a file first. 📄"}), 400
+        return jsonify({
+            "response": "Hello! 😊 It looks like you haven't uploaded a document yet. "
+                        "Please upload a file so I can assist you better. 📄"
+        }), 400
 
     try:
         extracted_text_entry = ExtractedTexts.query.filter_by(file_id=file_id).first()
         if not extracted_text_entry:
-            return jsonify({"response": "Extracted text not found. Please upload the document again. 📄"}), 400
+            return jsonify({
+                "response": "Oops! 😯 I couldn't find the extracted text for this file. "
+                            "Could you please try uploading the document again? 📄"
+            }), 400
 
         extracted_text = extracted_text_entry.extracted_text
-        query_input = f"{user_input}\n\nBased on the document content: {extracted_text}"
+        query_input = f"User Query: {user_input}\n\nRelevant Document Context:\n{extracted_text[:1000]}..."
 
         print(f"Sending Query to AI Model: {query_input}")  # Debugging
 
@@ -417,9 +466,9 @@ def chat_response():
             response = model.generate_content(query_input)
             response_text = response.text if response and response.text else "I couldn't find relevant information. 😞"
         except Exception as e:
-            response_text = f"Error processing the query: {str(e)} 😔"
+            response_text = f"Oops! Something went wrong while processing your query: {str(e)} 😔"
 
-        # Add smileys based on the content of the AI's response
+        # Add friendly smileys based on the response content
         if "good" in response_text.lower() or "thank" in response_text.lower():
             response_text += " 😊"
         elif "sorry" in response_text.lower() or "error" in response_text.lower():
@@ -427,14 +476,14 @@ def chat_response():
         elif "help" in response_text.lower():
             response_text += " 🤔"
         else:
-            response_text += " 😎"  # Add a cool emoji for casual responses
+            response_text += " 😎"
 
         return jsonify({"response": response_text})
 
     except Exception as e:
-        return jsonify({"response": f"An error occurred: {str(e)} 😔"}), 500
-
-
+        return jsonify({
+            "response": "Oops! Something unexpected happened. Please try again. 😔"
+        }), 500
 
 
 

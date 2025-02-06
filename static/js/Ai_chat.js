@@ -1,13 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Selecting Elements
     const noChatContainer = document.querySelector(".nochat-container");
     const chatContainer = document.querySelector(".chat-container");
     const chatbox = document.getElementById('chatbox');
-
     const inputs = document.querySelectorAll(".chatinput-item");
     const sendButtons = document.querySelectorAll(".sendBtn");
     const fileUploads = document.querySelectorAll("input[type='file']");
-
     let currentFileId = null; // Store latest uploaded file ID
 
     // Function to show chat container
@@ -22,14 +19,29 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!message) return;
 
         if (!currentFileId) {
-            alert("Please upload a document first.");
+            // Feedback to the user to upload a document
+            const uploadMessageElem = document.createElement('li');
+            uploadMessageElem.classList.add('chat-incoming', 'chat');
+
+            // Add the figure and image for the incoming message
+            uploadMessageElem.innerHTML = `
+                <figure class="chat-image">
+                    <img src="/static/images/solid-pro.svg" alt="brand-logo" />
+                </figure>
+                <p>Almost ready to help! 📑 Upload a document, and I'll dive right into your query like a detective on a case! 🕵️‍♂️</p>
+            `;
+            chatbox.appendChild(uploadMessageElem);
+            chatbox.scrollTop = chatbox.scrollHeight;
             return;
         }
 
         // Display user message
         const userMessageElem = document.createElement('li');
         userMessageElem.classList.add('chat-outgoing', 'chat');
-        userMessageElem.innerHTML = `<p>${message}</p>`;
+        userMessageElem.innerHTML = `
+            
+            <p>${message}</p>
+        `;
         chatbox.appendChild(userMessageElem);
 
         inputElement.value = ''; // Clear input
@@ -46,7 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             const aiMessageElem = document.createElement('li');
             aiMessageElem.classList.add('chat-incoming', 'chat');
-            aiMessageElem.innerHTML = `<p>${data.response}</p>`;
+
+            // Add the figure and img for the incoming message
+            aiMessageElem.innerHTML = `
+                <figure class="chat-image">
+                   <img src="/static/images/solid-pro.svg" alt="brand-logo" />
+                </figure>
+                <p>${data.response}</p>
+            `;
             chatbox.appendChild(aiMessageElem);
 
             chatbox.scrollTop = chatbox.scrollHeight;
@@ -54,7 +73,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
             const errorMessageElem = document.createElement('li');
             errorMessageElem.classList.add('chat-incoming', 'chat');
-            errorMessageElem.innerHTML = `<p>Sorry, something went wrong. Please try again later.</p>`;
+            errorMessageElem.innerHTML = `
+                <figure class="chat-image">
+                    <img src="/static/images/solid-pro.svg" alt="brand-logo" />
+                </figure>
+                <p>Sorry, something went wrong. Please try again later.</p>
+            `;
             chatbox.appendChild(errorMessageElem);
             chatbox.scrollTop = chatbox.scrollHeight;
         }
@@ -76,10 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 sendMessage(inputs[index]);
             }
         });
-
-        input.addEventListener("input", function () {
-            if (input.value.trim() !== "") showChatContainer();
-        });
     });
 
     // Handle file uploads
@@ -93,7 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Display file upload message
             const uploadMessageElem = document.createElement('li');
             uploadMessageElem.classList.add('chat-outgoing', 'chat');
-            uploadMessageElem.innerHTML = `<p>Uploading document: ${file.name}...</p>`;
+            uploadMessageElem.innerHTML = `
+                
+                <p>Uploading document: ${file.name}...</p>
+            `;
             chatbox.appendChild(uploadMessageElem);
 
             const formData = new FormData();
@@ -112,7 +135,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const uploadSuccessMessageElem = document.createElement('li');
                 uploadSuccessMessageElem.classList.add('chat-incoming', 'chat');
-                uploadSuccessMessageElem.innerHTML = `<p>File ${file.name} uploaded successfully.</p>`;
+                uploadSuccessMessageElem.innerHTML = `
+                    <figure class="chat-image">
+<img src="/static/images/solid-pro.svg" alt="brand-logo" />
+                    </figure>
+                    <p>File ${file.name} uploaded successfully.</p>
+                `;
                 chatbox.appendChild(uploadSuccessMessageElem);
 
                 chatbox.scrollTop = chatbox.scrollHeight;
@@ -120,10 +148,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Upload Error:', error);
                 const uploadErrorMessageElem = document.createElement('li');
                 uploadErrorMessageElem.classList.add('chat-incoming', 'chat');
-                uploadErrorMessageElem.innerHTML = `<p>Sorry, there was an error uploading the file.</p>`;
+                uploadErrorMessageElem.innerHTML = `
+                    <figure class="chat-image">
+                        <img src="/static/images/solid-pro.svg" alt="brand-logo" />
+                    </figure>
+                    <p>Sorry, there was an error uploading the file.</p>
+                `;
                 chatbox.appendChild(uploadErrorMessageElem);
                 chatbox.scrollTop = chatbox.scrollHeight;
             }
+            
         });
+        
     });
+    
 });

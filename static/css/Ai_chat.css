@@ -19,11 +19,9 @@ body {
  
  
 .chat-container {
-  display: flex; /* Enable flexbox layout for chat container */
-  flex-direction: column; /* Arrange children in a column */
-  margin-top: 50px; /* Add margin to account for the fixed navbar height */
-  height: calc(100vh - 50px); /* Adjust height dynamically based on viewport */
-  padding: 0 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
  
 .chatbox {
@@ -31,6 +29,7 @@ body {
   overflow-y: auto; /* Enable scrolling */
   flex-grow: 1; /* Allow chatbox to take available space */
   padding: 0;
+  max-height: calc(100vh - 140px);
 }
  
 .chat {
@@ -50,7 +49,7 @@ body {
 .chat-incoming p {
   background-color: #e0e8fa; /* Light blue background */
   padding: 10px;
-  border-radius: 10px 10px 0 10px; /* Rounded corners */
+  border-radius: 10px 10px 10px 0px; /* Rounded corners */
   word-wrap: break-word; /* Break text if it's too long */
 }
  
@@ -65,7 +64,7 @@ body {
   background-color: #1448a8;; /* Light green background */
   color: #ffffff;
   padding: 10px;
-  border-radius: 10px 10px 10px 0; /* Rounded corners */
+  border-radius: 10px 10px 0px 10px; /* Rounded corners */
   word-wrap: break-word; /* Break text if it's too long */
 }
  

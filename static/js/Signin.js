@@ -55,7 +55,6 @@ document.querySelector(".form").addEventListener("submit", function(event) {
     }
 });
 
-// Get the elements for both password fields and eye icons
 document.addEventListener("DOMContentLoaded", function () {
   // Add event listener for both the 'New Password' and 'Confirm Password' fields
   document.querySelectorAll(".toggle-password").forEach((toggle) => {

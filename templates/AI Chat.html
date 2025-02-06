@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Ai_Chat</title>
+
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,13 +15,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/Sidebar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/Ai_chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Common.css') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/solid-pro.svg') }}">
+
 </head>
 <body>
-    <div class="container-fluid d-flex">
+    <div class="d-flex w-100">
         <!-- Sidebar -->
         <div class="sidebar">
             <header class="d-flex align-items-center gap-2">
-                <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-image">
+                <img src="{{ url_for('static', filename='images/solid-pro-light.svg') }}" alt="Logo" class="logo-image">
                 <div class="legal-ai">LEGAL AI</div>
             </header>
             
@@ -73,76 +78,59 @@
                 </div>
             </div>
         </div>
-
-        
-
-        <!-- Main Content -->
-        <div class="AI-Container">
-            <!-- No Chat Section -->
-            <section class="nochat-container">
-                <div class="nochat-description">
-                    <h2 class="nochat-title">Welcome to Legal AI</h2>
-                    <p class="nochat-helper">Hey! How can I assist you today?</p>
-                </div>
-                <div class="chatinput-wrapper">
-                    <div>
-                        <textarea type="text" placeholder="Example: What is legal AI?" class="chatinput-item" id="nochatInput"></textarea>
-                        <div class="chatinput-actions">
-                            <input type="file" id="nochatFileUpload" accept=".pdf" class="d-none" />
-                            <label for="nochatFileUpload" class="chatinput-upload">
-                                <img src="{{ url_for('static', filename='images/proicons_attach.png') }}" alt="Upload">
-                            </label>
-                            <button class="sendBtn" id="nochatSendBtn" title="Send Message">
-                                <img src="{{ url_for('static', filename='images/send.png') }}" alt="Send Message">
-                            </button>
+        <div class="content-area d-flex flex-column">
+            <div class="card flex-grow-1">
+                <div class="card-body d-flex flex-column">
+                    <section class="nochat-container">
+                        <div class="nochat-description">
+                            <h2 class="nochat-title">Welcome to Legal AI</h2>
+                            <p class="nochat-helper">The power of AI at your service - Tame the knowledge</p>
                         </div>
-                    </div>
-                </div>
-            </section>
-        
-            <!-- Chat Section -->
-            <div class="chat-container d-none">
-                <ul class="chatbox" id="chatbox">
-                    <li class="chat-incoming chat"><p>Hey! How can I assist you today?</p></li>
-                </ul>
-                <div class="chatinput-wrapper">
-                    <div style="max-width: initial;">
-                        <textarea type="text" placeholder="Example: What is legal AI?" class="chatinput-item" id="chatInput"></textarea>
-                        <div class="chatinput-actions">
-                            <input type="file" id="chatFileUpload" accept=".pdf" class="d-none" />
-                            <label for="chatFileUpload" class="chatinput-upload">
-                                <img src="{{ url_for('static', filename='images/proicons_attach.png') }}" alt="Upload">
-                            </label>
-                            <button class="sendBtn" id="chatSendBtn" title="Send Message">
-                                <img src="{{ url_for('static', filename='images/send.png') }}" alt="Send Message">
-                            </button>
+                        <div class="chatinput-wrapper">
+                            <div>
+                                <textarea type="text" placeholder="Pls upload a document" class="chatinput-item" id="nochatInput"></textarea>
+                                <div class="chatinput-actions">
+                                    <input type="file" id="nochatFileUpload" accept=".pdf" class="d-none" />
+                                    <label for="nochatFileUpload" class="chatinput-upload">
+                                        <img src="{{ url_for('static', filename='images/proicons_attach.png') }}" alt="Upload">
+                                    </label>
+                                    <button class="sendBtn" id="nochatSendBtn" title="Send Message">
+                                        <img src="{{ url_for('static', filename='images/send.png') }}" alt="Send Message">
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </section>
+                    <section class="chat-container d-none">
+                        <ul class="chatbox" id="chatbox">
+                            <li class="chat-incoming chat">
+                               
+                            </li>
+                        </ul>
+                        <div class="chatinput-wrapper">
+                            <div style="max-width: initial;">
+                                <textarea type="text" placeholder="Please upload a document" class="chatinput-item" id="chatInput"></textarea>
+                                <div class="chatinput-actions">
+                                    <input type="file" id="chatFileUpload" accept=".pdf" class="d-none" />
+                                    <label for="chatFileUpload" class="chatinput-upload">
+                                        <img src="{{ url_for('static', filename='images/proicons_attach.png') }}" alt="Upload">
+                                    </label>
+                                    <button class="sendBtn" id="chatSendBtn" title="Send Message">
+                                        <img src="{{ url_for('static', filename='images/send.png') }}" alt="Send Message">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
-        
-                <!-- <div class="chat-input">
-                    <div class="input-wrapper">
-                        <input type="file" id="fileUpload" accept=".pdf" style="display: none;" />
-                        <label for="fileUpload" class="upload-icon">
-                            <img src="{{ url_for('static', filename='images/proicons_attach.png') }}"alt="Upload">                       
-                        </label>
-                        <textarea id="userInput" rows="1" placeholder="Pls upload a document..."></textarea>
-                    </div>
-                    <button id="sendBTN" title="Send Message">
-                        <img src="{{ url_for('static', filename='images/send.png') }}" alt="Send Message">
-                    </button>
-                </div> -->
-            </div>
-        </div>
+    </div>
         
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-
-    <script src="{{ url_for('static', filename='js/Ai_chat.js') }}"></script>
-         <!-- Main Content -->
+<script src="{{ url_for('static', filename='js/Ai_chat.js') }}"></script>
 
     
 </body>
