@@ -78,71 +78,74 @@
 
         
       
-        <div class="content-area d-flex flex-column d-none" >
-            <div class="card flex-grow-1">
-                <div class="card-body d-flex flex-column">
-                    <header class="page-header">
-                        <h2>Documents</h2>
-                    </header>
-                    <div class="d-flex flex-column gap-4" >
-                        <section>
-                            <h5>Recent</h5>
-                            <ul class="recent-file">
-                                {% for file in recent_files %}
-                                <li class="recent-file__list">
-                                    <figure class="recent-file__icon">
-                                        <img src="{{ url_for('static', filename='images/solar.png') }}" alt="Document Outline" class="solar">
-                                    </figure>
-                                    <div class="recent-file__description">
-                                        <h6 class="recent-file__name">{{ file.filename }}</h6>
-                                        <p class="recent-file__details">
-                                            <span>{{ file.uploaded_at.strftime('%Y-%m-%d') }}</span>
-                                        </p>
-                                    </div>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </section>
-                        <section>
-                            <h5>All Files</h5>
-                            <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th scope="col">S.no</th>
-                                    <th scope="col">Filename</th>
-                                    <th scope="col">Uploaded At</th>
-                                    <th scope="col">Actions</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                    {% for file in all_files %}
-                                    <tr>
-                                        <td>{{ loop.index }}</td>
-                                        <td>{{ file.filename }}</td>
-                                        <td>{{ file.uploaded_at.strftime('%Y-%m-%d') }}</td>
-                                        <td>
-                                            <a href="{{ url_for('download_file', file_id=file.file_hash) }}" class="btn btn-primary btn-sm" style="background-color: #3660b3;" download>
-                                                <i class="bi bi-download"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </section>
-                    </div>
-                </div>
+       <div class="content-area d-flex flex-column">
+        <div class="spinner-border text-primary d-none" role="status"><span class="sr-only">Loading...</span></div>
+    <div class="card flex-grow-1">
+        <div class="card-body d-flex flex-column">
+            <header class="page-header">
+                <h2>Documents</h2>
+            </header>
+            {% if recent_files | length > 0 %}
+            <div class="d-flex flex-column gap-4">
+                <section>
+                    <h5>Recent</h5>
+                    <ul class="recent-file">
+                        {% for file in recent_files %}
+                            <li class="recent-file__list">
+                                <figure class="recent-file__icon">
+                                    <img src="{{ url_for('static', filename='images/solar.png') }}" alt="Document Outline" class="solar">
+                                </figure>
+                                <div class="recent-file__description">
+                                    <h6 class="recent-file__name">{{ file.filename }}</h6>
+                                    <p class="recent-file__details">
+                                        <span>{{ file.uploaded_at.strftime('%Y-%m-%d') }}</span>
+                                    </p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+                <section>
+                    <h5>All Files</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">S.no</th>
+                                <th scope="col">Filename</th>
+                                <th scope="col">Uploaded At</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in all_files %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ file.filename }}</td>
+                                    <td>{{ file.uploaded_at.strftime('%Y-%m-%d') }}</td>
+                                    <td>
+                                        <a href="{{ url_for('download_file', file_id=file.file_hash) }}" class="btn btn-primary btn-sm" style="background-color: #3660b3;" download>
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
             </div>
+            {% else %}
+            <section class="empty-state flex-grow-1">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                    <path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 38.6C310.1 219.5 256 287.4 256 368c0 59.1 29.1 111.3 73.7 143.3c-3.2 .5-6.4 .7-9.7 .7L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zm48 96a144 144 0 1 1 0 288 144 144 0 1 1 0-288zm59.3 107.3c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L432 345.4l-36.7-36.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L409.4 368l-36.7 36.7c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L432 390.6l36.7 36.7c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L454.6 368l36.7-36.7z"/>
+                </svg>
+                <h2>There are no files uploaded. Start asking your questions.</h2>
+                <a href="{{ url_for('ai_chat') }}" class="btn btn-primary btn-sm" style="background-color: #3660b3;" id="get-started-btn">Get Started!</a>
+            </section>
+        {% endif %}
         </div>
+    </div>
+</div>
 
-        <section class="empty-state flex-grow-1 ">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                <path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 38.6C310.1 219.5 256 287.4 256 368c0 59.1 29.1 111.3 73.7 143.3c-3.2 .5-6.4 .7-9.7 .7L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zm48 96a144 144 0 1 1 0 288 144 144 0 1 1 0-288zm59.3 107.3c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L432 345.4l-36.7-36.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L409.4 368l-36.7 36.7c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L432 390.6l36.7 36.7c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L454.6 368l36.7-36.7z"/>
-            </svg>
-            <h2>There are no files uploaded. Start asking your questions.</h2>
-            <button class="btn btn-primary" style="background-color: #3660b3;" id="get-started-btn">Get Started</button>
-        </section>
-        
 
 
         <script src="{{ url_for('static', filename='js/document.js') }}"></script>

@@ -61,6 +61,7 @@ h5 {
     border-radius: 8px;
     padding: 8px 12px;
     gap: 12px;
+    max-width: 420px;
 }
 
 .recent-file__description {

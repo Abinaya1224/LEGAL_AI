@@ -374,10 +374,8 @@ def upload_file():
     db.session.add(new_file)
     db.session.commit()
 
-    # Extract text from the uploaded PDF
-    extracted_text = None
-    if file.filename.endswith('.pdf'):
-        extracted_text = extract_text_from_scanned_pdf(file_data)
+    # Extract text from the uploaded file
+    extracted_text = extract_text(file.filename, file_data)
 
     if extracted_text:
         # Save the extracted text in the ExtractedTexts table
@@ -394,43 +392,134 @@ def upload_file():
     return jsonify({'file_id': new_file.file_id}), 200
 
 
-# Function to extract text from scanned PDF using Tesseract
+def extract_text(filename, file_data):
+    if filename.endswith('.pdf'):
+        return extract_text_from_pdf(file_data)
+    elif filename.endswith('.txt'):
+        return extract_text_from_txt(file_data)
+    elif filename.endswith('.docx'):
+        return extract_text_from_docx(file_data)
+    elif filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+        return extract_text_from_image(file_data)
+    else:
+        return None
+
+def extract_text_from_pdf_or_scanned(pdf_bytes):
+    """
+    This function attempts to extract text from a PDF. It first tries to extract text from the PDF content,
+    and if the content is image-based, it falls back on OCR.
+    """
+    # Try extracting text using extract_text_from_pdf()
+    extracted_text = extract_text_from_pdf(pdf_bytes)
+    
+    if extracted_text is None or not extracted_text.strip():  # If no text or extraction failed
+        # Fallback to OCR if the direct extraction didn't work
+        print("Direct text extraction failed, using OCR.")
+        extracted_text = extract_text_from_scanned_pdf(pdf_bytes)
+    
+    return extracted_text
+
+
+def extract_text_from_pdf(pdf_bytes):
+    """
+    Extract text from PDF using PyMuPDF (fitz). If text is not found, apply OCR.
+    """
+    try:
+        pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")
+        text = ""
+
+        for page_num in range(pdf_document.page_count):
+            page = pdf_document.load_page(page_num)
+            page_text = page.get_text("text")
+
+            if not page_text.strip():  # If no text found, try OCR
+                print(f"Page {page_num + 1} is image-based, applying OCR.")
+                # Convert the page to an image
+                pix = page.get_pixmap()  
+                img_bytes = pix.tobytes("png")  # Convert to PNG image
+
+                # Use pytesseract to extract text from the image
+                image = Image.open(io.BytesIO(img_bytes))
+                page_text = pytesseract.image_to_string(image)
+
+            text += page_text  # Add text or OCR result for this page
+
+        pdf_document.close()
+        return text
+    except Exception as e:
+        print(f"Error extracting text from PDF: {e}")
+        return None
+
+
 def extract_text_from_scanned_pdf(pdf_bytes):
+    """
+    Function to extract text from scanned PDFs (image-based PDFs) using Tesseract OCR.
+    """
     try:
         pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")  # Use the 'stream' parameter for bytes
         text = ""
+
         for page in pdf_document:
             pix = page.get_pixmap()
             img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-            custom_config = r'--oem 3 --psm 11'
+            custom_config = r'--oem 3 --psm 11'  # Custom Tesseract config for OCR
             text += pytesseract.image_to_string(img, config=custom_config) + "\n"
+        
         pdf_document.close()
         return text
     except Exception as e:
         print(f"Error extracting text from scanned PDF: {e}")
         return None
+
+
+
+
+
+def extract_text_from_txt(txt_bytes):
+    try:
+        return txt_bytes.decode('utf-8')
+    except Exception as e:
+        print(f"Error extracting text from TXT file: {e}")
+        return None
+
+
+def extract_text_from_docx(docx_bytes):
+    try:
+        from io import BytesIO
+        from docx import Document
+
+        # Load the DOCX document from bytes
+        doc_file = BytesIO(docx_bytes)
+        doc = Document(doc_file)
+
+        # Extract text from paragraphs
+        text = '\n'.join([p.text.strip() for p in doc.paragraphs if p.text.strip()])
+        
+        if not text:
+            print("No text extracted from DOCX. The document may be empty.")
+            return None
+
+        return text
+    except Exception as e:
+        print(f"Error extracting text from DOCX file: {e}")
+        return None
+
+
+
+def extract_text_from_image(image_bytes):
+    try:
+        from PIL import Image
+        import pytesseract
+        import io
+
+        image = Image.open(io.BytesIO(image_bytes))
+        return pytesseract.image_to_string(image)
+    except Exception as e:
+        print(f"Error extracting text from image: {e}")
+        return None
+
 
  
-# Function to extract text from scanned PDF using Tesseract
-def extract_text_from_scanned_pdf(pdf_bytes):
-    try:
-        pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")  # Use the 'stream' parameter for bytes
-        text = ""
-        for page in pdf_document:
-            pix = page.get_pixmap()
-            img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-            custom_config = r'--oem 3 --psm 11'
-            text += pytesseract.image_to_string(img, config=custom_config) + "\n"
-        pdf_document.close()
-        return text
-    except Exception as e:
-        print(f"Error extracting text from scanned PDF: {e}")
-        return None
-
-
-
-
-
 
 
 @app.route('/chat', methods=['POST'])
