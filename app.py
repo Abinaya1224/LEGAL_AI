@@ -17,6 +17,8 @@ from io import BytesIO
 import fitz  # PyMuPDF
 import pytesseract
 from PIL import Image
+import os
+from dotenv import load_dotenv
 
 
 
@@ -25,16 +27,16 @@ from PIL import Image
 app = Flask(__name__, template_folder="templates", static_folder="static")
 app.secret_key = '12345'  # Needed for flashing messages
 
-app.config['SQLALCHEMY_DATABASE_URI']  = 'postgresql://postgres:Solidpro%402024@localhost:5432/legalai'
+app.config['SQLALCHEMY_DATABASE_URI']  = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # Set up the API key (make sure this is valid and properly set in Google Cloud Console)
-genai.configure(api_key="AIzaSyB4kcOA9nB661FF8tFcbUtH1Lxbyle7y3A")
+genai.configure(api_key=os.getenv('GOOGLE_API_KEY')))
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 
-pytesseract.pytesseract.tesseract_cmd = r'C:/Users/rabinaya/AppData/Local/Programs/Tesseract-OCR/tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = os.getenv('TESSERACT_CMD_PATH') 
 
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
 
