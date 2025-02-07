@@ -64,14 +64,10 @@
                 
                 <div class="item-list1">
                     <hr class="separator">
-                    <div class="item logout-item">
-                        <div class="material">
-                            <img src="{{ url_for('static', filename='images/power_settings_new.png') }}" alt="Logout Icon" class="material-icon">
-                        </div>
-                        <a href="{{ url_for('logout') }}" class="text-decoration-none">
-                            <div class="item-text text-danger">Logout</div>
-                        </a>
-                    </div>
+                    <a class="item logout-item text-decoration-none" href="{{ url_for('logout') }}">
+                        <span class="material"><img src="{{ url_for('static', filename='images/power_settings_new.png') }}" alt="Logout Icon" class="material-icon"></span>
+                        <span class="text-danger">Logout</span>
+                    </a>
                 </div>
             </div>
         </div>

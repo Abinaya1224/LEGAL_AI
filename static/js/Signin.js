@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
       dots[i].classList.toggle("active", i === index);
     });
   };
+  
 
   const nextSlide = () => {
     currentSlide = (currentSlide + 1) % slides.length;
