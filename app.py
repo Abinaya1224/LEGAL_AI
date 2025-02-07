@@ -23,6 +23,7 @@ import re
 import os
 import urllib.parse
 import io
+import openai
 
 
 
@@ -47,10 +48,8 @@ app.config['SESSION_COOKIE_NAME'] = 'session_id'  # Default name for session coo
 
 
 
-# Set up the API key (make sure this is valid and properly set in Google Cloud Console)
 genai.configure(api_key="AIzaSyB4kcOA9nB661FF8tFcbUtH1Lxbyle7y3A")
-model = genai.GenerativeModel("gemini-1.5-flash")
-
+model = genai.GenerativeModel("gemini-1.5-flash")  
 
 pytesseract.pytesseract.tesseract_cmd = r'C:/Users/rabinaya/AppData/Local/Programs/Tesseract-OCR/tesseract.exe'
  
@@ -474,7 +473,6 @@ def extract_text_from_scanned_pdf(pdf_bytes):
 
 
 
-
 def extract_text_from_txt(txt_bytes):
     try:
         return txt_bytes.decode('utf-8')
@@ -519,67 +517,44 @@ def extract_text_from_image(image_bytes):
         return None
 
 
- 
-
 
 @app.route('/chat', methods=['POST'])
 def chat_response():
     user_input = request.json.get('message', '').strip()
-    file_id = request.json.get('file_id')  # Get file_id from request
+    file_id = request.json.get('file_id')
 
     if not user_input:
-        return jsonify({
-            "response": "Hey there! 😊 Please enter a valid query so I can assist you. 💡"
-        }), 400
+        return jsonify({"response": "Hey there! Please enter a valid query so I can assist you."}), 400
 
     if not file_id:
-        return jsonify({
-            "response": "Hello! 😊 It looks like you haven't uploaded a document yet. "
-                        "Please upload a file so I can assist you better. 📄"
-        }), 400
+        return jsonify({"response": "Hello! It looks like you haven't uploaded a document yet. Please upload a file so I can assist you better."}), 400
 
     try:
         extracted_text_entry = ExtractedTexts.query.filter_by(file_id=file_id).first()
         if not extracted_text_entry:
-            return jsonify({
-                "response": "Oops! 😯 I couldn't find the extracted text for this file. "
-                            "Could you please try uploading the document again? 📄"
-            }), 400
+            return jsonify({"response": "Oops! I couldn't find the extracted text for this file. Could you please try uploading the document again?"}), 400
 
-        extracted_text = extracted_text_entry.extracted_text
-        query_input = f"User Query: {user_input}\n\nRelevant Document Context:\n{extracted_text[:1000]}..."
+        extracted_text = extracted_text_entry.extracted_text  # ✅ Full document
 
-        print(f"Sending Query to AI Model: {query_input}")  # Debugging
+        query_input = f"""
+        User Query: {user_input}
+
+        Full Extracted Document Text:
+        {extracted_text}
+        """
+
+        print(f"Sending full document to AI model (length: {len(extracted_text)} characters)")
 
         try:
             response = model.generate_content(query_input)
-            response_text = response.text if response and response.text else "I couldn't find relevant information. 😞"
+            response_text = response.text if response and response.text else "I couldn't find relevant information."
         except Exception as e:
-            response_text = f"Oops! Something went wrong while processing your query: {str(e)} 😔"
-
-        # Add friendly smileys based on the response content
-        if "good" in response_text.lower() or "thank" in response_text.lower():
-            response_text += " 😊"
-        elif "sorry" in response_text.lower() or "error" in response_text.lower():
-            response_text += " 😞"
-        elif "help" in response_text.lower():
-            response_text += " 🤔"
-        else:
-            response_text += " 😎"
+            response_text = f"Oops! Something went wrong while processing your query: {str(e)}"
 
         return jsonify({"response": response_text})
 
     except Exception as e:
-        return jsonify({
-            "response": "Oops! Something unexpected happened. Please try again. 😔"
-        }), 500
-
-
-
-
-
-
-
+        return jsonify({"response": "Oops! Something unexpected happened. Please try again."}), 500
 
 
 if __name__ == "__main__":
