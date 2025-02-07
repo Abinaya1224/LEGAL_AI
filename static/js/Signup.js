@@ -1,3 +1,40 @@
+function validateInput(inputId, hintId, regex, minLength, successMessage, errorMessage, minLengthMessage) {
+  document.getElementById(inputId).addEventListener("input", function () {
+    let value = this.value.trim();
+    let hintElement = document.getElementById(hintId);
+
+    if (value.length < minLength) {
+      hintElement.textContent = minLengthMessage;
+      hintElement.classList.remove("success");
+      hintElement.classList.add("error");
+    } else if (!regex.test(value)) {
+      hintElement.textContent = errorMessage;
+      hintElement.classList.remove("success");
+      hintElement.classList.add("error");
+    } else {
+      hintElement.textContent = successMessage;
+      hintElement.classList.remove("error");
+      hintElement.classList.add("success");
+    }
+  });
+}
+validateInput(
+  "designation",
+  "designation-hint",
+  /^[A-Za-z]+(?:\s[A-Za-z]+)*$/,
+  3,
+  "Designation looks good!",
+  "Please enter a valid designation."
+);
+
+validateInput(
+  "organisation",
+  "organisation-hint",
+  /^[A-Za-z]+(?:\s[A-Za-z]+)*$/,
+  3,
+  "Organisation looks good!",
+  "Please enter a valid organisation."
+);
 document.getElementById("name").addEventListener("input", function() {
   let name = this.value.trim();
   let nameRegex = /^[A-Za-z]+(?:\s[A-Za-z]+)*$/;
@@ -65,11 +102,11 @@ document.getElementById("confirm-password").addEventListener("input", function()
 
 const flashMessage = "{{ get_flashed_messages()|join(', ') }}"; 
 
-    if (flashMessage) {
-      const flashMessageContainer = document.getElementById('flash-message-container');
-      flashMessageContainer.innerHTML = `
-        <div class="flash-message">
-          <p>${flashMessage}</p>
-        </div>
-      `;
-    }
+if (flashMessage) {
+  const flashMessageContainer = document.getElementById('flash-message-container');
+  flashMessageContainer.innerHTML = `
+    <div class="flash-message">
+      <p>${flashMessage}</p>
+    </div>
+  `;
+}

@@ -166,44 +166,54 @@ input[type="checkbox"] {
 }
  
 .slider h2 {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: 16px;
-  color:#FFFFFF99
+  color:#fff;
+}
+
+.slider {
+  flex: 1;
 }
  
 .slider p {
-  font-size: 28px;
-  line-height: 42px;
+  font-size: 20px;
+  line-height: 1.4;
   font-weight: 400;
+  color: rgba(255,255,255,.7);
 }
- 
-/* Slider Content */
+
 .slider-content {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  overflow: hidden; /*Prevent overflowing content */
-  height: auto; /* Allow natural height */
+  overflow: hidden;
 }
- 
+
 .slide {
-  display: none; /* Only show the active slide */
-  font-size: 28px;
-  line-height: 42px;
-  font-weight: 400;
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px); /* Starts lower */
+  transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
 }
- 
+
 .slide.active {
-  display: block; /* Ensure only the active slide is visible */
+  opacity: 1;
+  transform: translateY(0);
+  position: relative;
 }
+
+
  
 /* Dots */
 .dots {
   display: flex;
   justify-content: flex-start;
   gap: 8px;
-  margin-top: 80px;
+  margin-top: 60px;
 }
  
 .dot {
